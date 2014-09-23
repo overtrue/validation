@@ -1,0 +1,22 @@
+{
+    "name": "overtrue/validation",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Carlos",
+            "email": "anzhengchao@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "Overtrue/container": "5.0.*",
+    },
+    
+    "autoload": {
+        "psr-4": {
+            "Overtrue\\Validation\\": ""
+        }
+    },
+    
+    "minimum-stability": "dev"
+}
