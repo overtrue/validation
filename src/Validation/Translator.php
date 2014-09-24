@@ -97,7 +97,7 @@ class Translator implements TranslatorInterface
      */
     public function trans($key)
     {
-        return arrayGet($this->messages, $key);
+        return $this->arrayGet($this->messages, $key);
     }
 
     /**
