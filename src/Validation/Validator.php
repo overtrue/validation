@@ -2449,17 +2449,6 @@ class Validator
     }
 
     /**
-     * Get the messages for the instance.
-     *
-     *
-     * @return \Overtrue\Support\MessageBag
-     */
-    public function getMessageBag()
-    {
-        return $this->messages();
-    }
-
-    /**
      * Call a custom validator extension.
      *
      * @param  string  $rule
