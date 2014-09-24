@@ -1,5 +1,6 @@
 <?php
 
+namespace Overtrue\Validation;
 
 interface TranslatorInterface
 {
