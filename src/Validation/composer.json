@@ -1,0 +1,23 @@
+{
+    "name": "overtrue/validation",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Carlos",
+            "email": "anzhengchao@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    
+    "autoload": {
+        "psr-4": {
+            "Overtrue\\Validation": ""
+        }
+    },
+
+    "target-dir": "Illuminate/Database",
+    
+    "minimum-stability": "dev"
+}
