@@ -73,6 +73,7 @@ class Factory {
 	 * @param  array  $rules
 	 * @param  array  $messages
 	 * @param  array  $customAttributes
+     *
 	 * @return \Overtrue\Validation\Validator
 	 */
 	public function make(array $data, array $rules, array $messages = array(), array $customAttributes = array())
@@ -96,6 +97,7 @@ class Factory {
 	 * Add the extensions to a validator instance.
 	 *
 	 * @param  \Overtrue\Validation\Validator  $validator
+     *
 	 * @return void
 	 */
 	protected function addExtensions(Validator $validator)
@@ -121,6 +123,7 @@ class Factory {
 	 * @param  array  $rules
 	 * @param  array  $messages
 	 * @param  array  $customAttributes
+     *
 	 * @return \Overtrue\Validation\Validator
 	 */
 	protected function resolve(array $data, array $rules, array $messages, array $customAttributes)
@@ -141,7 +144,8 @@ class Factory {
 	 * @param  string  $rule
 	 * @param  \Closure|string  $extension
 	 * @param  string  $message
-	 * @return void
+	 *
+     * @return void
 	 */
 	public function extend($rule, $extension, $message = null)
 	{
@@ -156,7 +160,8 @@ class Factory {
 	 * @param  string   $rule
 	 * @param  \Closure|string  $extension
 	 * @param  string  $message
-	 * @return void
+	 *
+     * @return void
 	 */
 	public function extendImplicit($rule, $extension, $message = null)
 	{
@@ -170,7 +175,8 @@ class Factory {
 	 *
 	 * @param  string   $rule
 	 * @param  \Closure|string  $replacer
-	 * @return void
+	 *
+     * @return void
 	 */
 	public function replacer($rule, $replacer)
 	{
@@ -181,7 +187,8 @@ class Factory {
 	 * Set the Validator instance resolver.
 	 *
 	 * @param  \Closure  $resolver
-	 * @return void
+	 *
+     * @return void
 	 */
 	public function resolver(Closure $resolver)
 	{
@@ -212,7 +219,8 @@ class Factory {
 	 * Set the Presence Verifier implementation.
 	 *
 	 * @param  \Overtrue\Validation\PresenceVerifierInterface  $presenceVerifier
-	 * @return void
+	 *
+     * @return void
 	 */
 	public function setPresenceVerifier(PresenceVerifierInterface $presenceVerifier)
 	{
