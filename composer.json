@@ -1,5 +1,6 @@
 {
     "name": "overtrue/validation",
+    "description": "Laralve Validation 简化无依赖版",
     "license": "MIT",
     "authors": [
         {
@@ -13,7 +14,7 @@
     
     "autoload": {
         "psr-4": {
-            "Overtrue\\Validation": "src/Validation"
+            "Overtrue\\Validation\\": "src/Validation"
         }
     },
 
