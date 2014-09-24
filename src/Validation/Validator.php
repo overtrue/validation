@@ -31,7 +31,7 @@ class Validator
     /**
      * The messages.
      *
-     * @var array
+     * @var \Overtrue\Validation\MessageBag
      */
     protected $messages;
 
@@ -279,7 +279,7 @@ class Validator
      */
     public function passes()
     {
-        $this->messages = [];
+        $this->messages = new MessageBag();
 
         // We'll spin through each rule, validating the attributes attached to that
         // rule. Any error messages will be added to the containers with each of
@@ -297,7 +297,7 @@ class Validator
             call_user_func($after);
         }
 
-        return count($this->messages) === 0;
+        return count($this->messages->all()) === 0;
     }
 
     /**
@@ -2434,7 +2434,7 @@ class Validator
     {
         if ( ! $this->messages) $this->passes();
 
-        return $this->messages;
+        return $this->messages->all();
     }
 
     /**
