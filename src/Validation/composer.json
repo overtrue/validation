@@ -17,7 +17,7 @@
         }
     },
 
-    "target-dir": "Illuminate/Database",
+    "target-dir": "overtrue/validation",
     
     "minimum-stability": "dev"
 }
