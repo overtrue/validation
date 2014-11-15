@@ -137,7 +137,7 @@ class Validator
      * @param  array $messages
      * @param  array $customAttributes
      *
-     * 
+     *
      * @return \Overtrue\Validation\Validator
      */
     public function __construct(TranslatorInterface $translator, array $data, array $rules, array $messages = array(), array $customAttributes = array())
@@ -871,7 +871,7 @@ class Validator
     {
         $this->requireParameterCount(1, $parameters, 'max');
 
-        if (is_uploaded_file($value['tmp_name']) && $value['error']) return false;
+        if (!empty($value['tmp_name']) && is_uploaded_file($value['tmp_name']) && $value['error']) return false;
 
         return $this->getSize($attribute, $value) <= $parameters[0];
     }
@@ -1181,7 +1181,7 @@ class Validator
             return false;
         }
 
-        if (is_uploaded_file($value['tmp_name']) && $value['error']) {
+        if (!empty($value['tmp_name']) && is_uploaded_file($value['tmp_name']) && $value['error']) {
             return false;
         }
 
@@ -2566,7 +2566,7 @@ class Validator
      *
      * @param  string  $value
      * @param  string  $delimiter
-     * 
+     *
      * @return string
      */
     protected function snakeCase($value, $delimiter = '_')
