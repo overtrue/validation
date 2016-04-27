@@ -1,16 +1,27 @@
-<?php namespace Overtrue\Validation;
+<?php
+
+/*
+ * This file is part of the overtrue/validation.
+ *
+ * (c) overtrue <i@overtrue.me>
+ *
+ * This source file is subject to the MIT license that is bundled
+ * with this source code in the file LICENSE.
+ */
+
+namespace Overtrue\Validation;
 
 use Countable;
 use JsonSerializable;
 
-class MessageBag implements Countable, JsonSerializable {
-
+class MessageBag implements Countable, JsonSerializable
+{
     /**
      * All of the registered messages.
      *
      * @var array
      */
-    protected $messages = array();
+    protected $messages = [];
 
     /**
      * Default format for message output.
@@ -19,15 +30,14 @@ class MessageBag implements Countable, JsonSerializable {
      */
     protected $format = ':message';
 
-
     /**
      * Create a new message bag instance.
      *
-     * @param  array $messages
+     * @param array $messages
      *
      * @return \Overtrue\Validation\MessageBag
      */
-    public function __construct(array $messages = array())
+    public function __construct(array $messages = [])
     {
         foreach ($messages as $key => $value) {
             $this->messages[$key] = (array) $value;
@@ -37,8 +47,8 @@ class MessageBag implements Countable, JsonSerializable {
     /**
      * Add a message to the bag.
      *
-     * @param  string  $key
-     * @param  string  $message
+     * @param string $key
+     * @param string $message
      *
      * @return $this
      */
@@ -54,7 +64,7 @@ class MessageBag implements Countable, JsonSerializable {
     /**
      * Merge a new array of messages into the bag.
      *
-     * @param  array  $messages
+     * @param array $messages
      *
      * @return $this
      */
@@ -68,8 +78,8 @@ class MessageBag implements Countable, JsonSerializable {
     /**
      * Determine if a key and message combination already exists.
      *
-     * @param  string  $key
-     * @param  string  $message
+     * @param string $key
+     * @param string $message
      *
      * @return bool
      */
@@ -77,13 +87,13 @@ class MessageBag implements Countable, JsonSerializable {
     {
         $messages = (array) $this->messages;
 
-        return ! isset($messages[$key]) || ! in_array($message, $messages[$key]);
+        return !isset($messages[$key]) || !in_array($message, $messages[$key], true);
     }
 
     /**
      * Determine if messages exist for a given key.
      *
-     * @param  string  $key
+     * @param string $key
      *
      * @return bool
      */
@@ -95,8 +105,8 @@ class MessageBag implements Countable, JsonSerializable {
     /**
      * Get the first message from the bag for a given key.
      *
-     * @param  string  $key
-     * @param  string  $format
+     * @param string $key
+     * @param string $format
      *
      * @return string
      */
@@ -110,8 +120,9 @@ class MessageBag implements Countable, JsonSerializable {
     /**
      * Get all of the messages from the bag for a given key.
      *
-     * @param  string  $key
-     * @param  string  $format
+     * @param string $key
+     * @param string $format
+     *
      * @return array
      */
     public function get($key, $format = null)
@@ -125,13 +136,13 @@ class MessageBag implements Countable, JsonSerializable {
             return $this->transform($this->messages[$key], $format, $key);
         }
 
-        return array();
+        return [];
     }
 
     /**
      * Get all of the messages for every key in the bag.
      *
-     * @param  string  $format
+     * @param string $format
      *
      * @return array
      */
@@ -139,7 +150,7 @@ class MessageBag implements Countable, JsonSerializable {
     {
         $format = $this->checkFormat($format);
 
-        $all = array();
+        $all = [];
 
         foreach ($this->messages as $key => $messages) {
             $all = array_merge($all, $this->transform($messages, $format, $key));
@@ -151,9 +162,9 @@ class MessageBag implements Countable, JsonSerializable {
     /**
      * Format an array of messages.
      *
-     * @param  array   $messages
-     * @param  string  $format
-     * @param  string  $messageKey
+     * @param array  $messages
+     * @param string $format
+     * @param string $messageKey
      *
      * @return array
      */
@@ -165,9 +176,9 @@ class MessageBag implements Countable, JsonSerializable {
         // replacing the :message place holder with the real message allowing
         // the messages to be easily formatted to each developer's desires.
         foreach ($messages as $key => &$message) {
-            $replace = array(':message', ':key');
+            $replace = [':message', ':key'];
 
-            $message = str_replace($replace, array($message, $messageKey), $format);
+            $message = str_replace($replace, [$message, $messageKey], $format);
         }
 
         return $messages;
@@ -176,7 +187,8 @@ class MessageBag implements Countable, JsonSerializable {
     /**
      * Get the appropriate format based on the given format.
      *
-     * @param  string  $format
+     * @param string $format
+     *
      * @return string
      */
     protected function checkFormat($format)
@@ -217,7 +229,7 @@ class MessageBag implements Countable, JsonSerializable {
     /**
      * Set the default message format.
      *
-     * @param  string  $format
+     * @param string $format
      *
      * @return \Overtrue\Validation\MessageBag
      */
@@ -235,7 +247,7 @@ class MessageBag implements Countable, JsonSerializable {
      */
     public function isEmpty()
     {
-        return ! $this->any();
+        return !$this->any();
     }
 
     /**
@@ -281,7 +293,8 @@ class MessageBag implements Countable, JsonSerializable {
     /**
      * Convert the object to its JSON representation.
      *
-     * @param  int  $options
+     * @param int $options
+     *
      * @return string
      */
     public function toJson($options = 0)
@@ -298,5 +311,4 @@ class MessageBag implements Countable, JsonSerializable {
     {
         return $this->toJson();
     }
-
 }
