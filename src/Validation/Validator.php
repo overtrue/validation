@@ -2008,7 +2008,7 @@ class Validator
      */
     protected function parseArrayRule(array $rules)
     {
-        return array(studly_case(trim(array_get($rules, 0))), array_slice($rules, 1));
+        return array($this->studlyCase(trim(array_get($rules, 0))), array_slice($rules, 1));
     }
 
     /**
@@ -2031,7 +2031,7 @@ class Validator
             $parameters = $this->parseParameters($rules, $parameter);
         }
 
-        return array(studly_case(trim($rules)), $parameters);
+        return array($this->studlyCase(trim($rules)), $parameters);
     }
 
     /**
@@ -2090,7 +2090,7 @@ class Validator
         $this->addExtensions($extensions);
 
         foreach ($extensions as $rule => $extension) {
-            $this->implicitRules[] = studly_case($rule);
+            $this->implicitRules[] = $this->studlyCase($rule);
         }
     }
 
@@ -2119,7 +2119,7 @@ class Validator
     {
         $this->addExtension($rule, $extension);
 
-        $this->implicitRules[] = studly_case($rule);
+        $this->implicitRules[] = $this->studlyCase($rule);
     }
 
     /**
@@ -2564,16 +2564,29 @@ class Validator
     /**
      * Convert a string to snake case.
      *
-     * @param  string  $value
+     * @param  string  $string
      * @param  string  $delimiter
      *
      * @return string
      */
-    protected function snakeCase($value, $delimiter = '_')
+    protected function snakeCase($string, $delimiter = '_')
     {
         $replace = '$1'.$delimiter.'$2';
 
-        return ctype_lower($value) ? $value : strtolower(preg_replace('/(.)([A-Z])/', $replace, $value));
+        return ctype_lower($string) ? $string : strtolower(preg_replace('/(.)([A-Z])/', $replace, $string));
     }
 
+    /**
+     * Convert a value to studly caps case.
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    public function studlyCase($string)
+    {
+        $value = ucwords(str_replace(['-', '_'], ' ', $value));
+
+        return str_replace(' ', '', $value);
+    }
 }
