@@ -114,7 +114,7 @@ class Translator implements TranslatorInterface
      * @param array  $array
      * @param string $key
      * @param mixed  $default
-     * 
+     *
      * @return mixed
      */
     protected function arrayGet($array, $key, $default = null)

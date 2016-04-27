@@ -135,7 +135,7 @@ class Validator
      * @var array
      */
     protected $implicitRules = [
-        'Required', 'RequiredWith', 'RequiredWithAll', 'RequiredWithout', 'RequiredWithoutAll', 'RequiredIf', 'Accepted',
+        'Required', 'Filled', 'RequiredWith', 'RequiredWithAll', 'RequiredWithout', 'RequiredWithoutAll', 'RequiredIf', 'Accepted',
     ];
 
     /**
@@ -400,9 +400,9 @@ class Validator
         if ($this->hasRule($attribute, ['Sometimes'])) {
             return array_key_exists($attribute, array_dot($this->data))
                 || array_key_exists($attribute, $this->files);
-        } else {
-            return true;
         }
+
+        return true;
     }
 
     /**
@@ -428,7 +428,7 @@ class Validator
     {
         $this->addError($attribute, $rule, $parameters);
 
-        $this->failedRules[$attribute][$this->snakeCase($rule)] = $parameters;
+        $this->failedRules[$attribute][snake_case($rule)] = $parameters;
     }
 
     /**
@@ -625,7 +625,7 @@ class Validator
 
         $values = array_slice($parameters, 1);
 
-        if (in_array($data, $values, true)) {
+        if (in_array($data, $values)) {
             return $this->validateRequired($attribute, $value);
         }
 
@@ -696,9 +696,9 @@ class Validator
     {
         $this->requireParameterCount(1, $parameters, 'different');
 
-        $other = $parameters[0];
+        $other = array_get($this->data, $parameters[0]);
 
-        return isset($this->data[$other]) && $value !== $this->data[$other];
+        return isset($other) && $value !== $other;
     }
 
     /**
@@ -786,7 +786,7 @@ class Validator
         $this->requireParameterCount(1, $parameters, 'digits');
 
         return $this->validateNumeric($attribute, $value)
-            && strlen((string) $value) === $parameters[0];
+            && strlen((string) $value) == $parameters[0];
     }
 
     /**
@@ -820,7 +820,7 @@ class Validator
     {
         $this->requireParameterCount(1, $parameters, 'size');
 
-        return $this->getSize($attribute, $value) === $parameters[0];
+        return $this->getSize($attribute, $value) == $parameters[0];
     }
 
     /**
@@ -1460,7 +1460,7 @@ class Validator
      */
     protected function getMessage($attribute, $rule)
     {
-        $lowerRule = $this->snakeCase($rule);
+        $lowerRule = snake_case($rule);
 
         $inlineMessage = $this->getInlineMessage($attribute, $lowerRule);
 
@@ -1538,7 +1538,7 @@ class Validator
      */
     protected function getSizeMessage($attribute, $rule)
     {
-        $lowerRule = $this->snakeCase($rule);
+        $lowerRule = snake_case($rule);
 
         // There are three different types of size validations. The attribute may be
         // either a number, file, or string so we will check a few things to know
@@ -1585,10 +1585,16 @@ class Validator
      */
     protected function doReplacements($message, $attribute, $rule, $parameters)
     {
-        $message = str_replace(':attribute', $this->getAttribute($attribute), $message);
+        $value = $this->getAttribute($attribute);
 
-        if (isset($this->replacers[$this->snakeCase($rule)])) {
-            $message = $this->callReplacer($message, $attribute, $this->snakeCase($rule), $parameters);
+        $message = str_replace(
+            [':ATTRIBUTE', ':Attribute', ':attribute'],
+            [strtoupper($value), ucfirst($value), $value],
+            $message
+        );
+
+        if (isset($this->replacers[snake_case($rule)])) {
+            $message = $this->callReplacer($message, $attribute, snake_case($rule), $parameters);
         } elseif (method_exists($this, $replacer = "replace{$rule}")) {
             $message = $this->$replacer($message, $attribute, $rule, $parameters);
         }
@@ -1646,7 +1652,7 @@ class Validator
         // underscores are removed from the attribute name and that will be
         // used as default versions of the attribute's displayable names.
         else {
-            return str_replace('_', ' ', $this->snakeCase($attribute));
+            return str_replace('_', ' ', snake_case($attribute));
         }
     }
 
@@ -1827,6 +1833,21 @@ class Validator
         $parameters = $this->getAttributeList($parameters);
 
         return str_replace(':values', implode(' / ', $parameters), $message);
+    }
+
+    /**
+     * Replace all place-holders for the required_with_all rule.
+     *
+     * @param  string  $message
+     * @param  string  $attribute
+     * @param  string  $rule
+     * @param  array   $parameters
+     *
+     * @return string
+     */
+    protected function replaceRequiredWithAll($message, $attribute, $rule, $parameters)
+    {
+        return $this->replaceRequiredWith($message, $attribute, $rule, $parameters);
     }
 
     /**
@@ -2020,7 +2041,7 @@ class Validator
      */
     protected function parseArrayRule(array $rules)
     {
-        return [$this->studlyCase(trim(array_get($rules, 0))), array_slice($rules, 1)];
+        return [studly_case(trim(array_get($rules, 0))), array_slice($rules, 1)];
     }
 
     /**
@@ -2043,7 +2064,7 @@ class Validator
             $parameters = $this->parseParameters($rules, $parameter);
         }
 
-        return [$this->studlyCase(trim($rules)), $parameters];
+        return [studly_case(trim($rules)), $parameters];
     }
 
     /**
@@ -2082,7 +2103,7 @@ class Validator
     public function addExtensions(array $extensions)
     {
         if ($extensions) {
-            $keys = array_map([$this, 'snakeCase'], array_keys($extensions));
+            $keys = array_map('Overtrue\Validation\snake_case', array_keys($extensions));
 
             $extensions = array_combine($keys, array_values($extensions));
         }
@@ -2100,7 +2121,7 @@ class Validator
         $this->addExtensions($extensions);
 
         foreach ($extensions as $rule => $extension) {
-            $this->implicitRules[] = $this->studlyCase($rule);
+            $this->implicitRules[] = studly_case($rule);
         }
     }
 
@@ -2112,7 +2133,7 @@ class Validator
      */
     public function addExtension($rule, $extension)
     {
-        $this->extensions[$this->snakeCase($rule)] = $extension;
+        $this->extensions[snake_case($rule)] = $extension;
     }
 
     /**
@@ -2125,7 +2146,7 @@ class Validator
     {
         $this->addExtension($rule, $extension);
 
-        $this->implicitRules[] = $this->studlyCase($rule);
+        $this->implicitRules[] = studly_case($rule);
     }
 
     /**
@@ -2147,7 +2168,7 @@ class Validator
     public function addReplacers(array $replacers)
     {
         if ($replacers) {
-            $keys = array_map([$this, 'snakeCase'], array_keys($replacers));
+            $keys = array_map('Overtrue\Validation\snake_case', array_keys($replacers));
 
             $replacers = array_combine($keys, array_values($replacers));
         }
@@ -2163,7 +2184,7 @@ class Validator
      */
     public function addReplacer($rule, $replacer)
     {
-        $this->replacers[$this->snakeCase($rule)] = $replacer;
+        $this->replacers[snake_case($rule)] = $replacer;
     }
 
     /**
@@ -2547,41 +2568,12 @@ class Validator
      */
     public function __call($method, $parameters)
     {
-        $rule = $this->snakeCase(substr($method, 8));
+        $rule = snake_case(substr($method, 8));
 
         if (isset($this->extensions[$rule])) {
             return $this->callExtension($rule, $parameters);
         }
 
         throw new \BadMethodCallException("Method [$method] does not exist.");
-    }
-
-    /**
-     * Convert a string to snake case.
-     *
-     * @param string $string
-     * @param string $delimiter
-     *
-     * @return string
-     */
-    protected function snakeCase($string, $delimiter = '_')
-    {
-        $replace = '$1'.$delimiter.'$2';
-
-        return ctype_lower($string) ? $string : strtolower(preg_replace('/(.)([A-Z])/', $replace, $string));
-    }
-
-    /**
-     * Convert a value to studly caps case.
-     *
-     * @param string $string
-     *
-     * @return string
-     */
-    public function studlyCase($string)
-    {
-        $string = ucwords(str_replace(['-', '_'], ' ', $string));
-
-        return str_replace(' ', '', $string);
     }
 }

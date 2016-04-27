@@ -15,7 +15,8 @@
     "autoload": {
         "psr-4": {
             "Overtrue\\Validation\\": "src/"
-        }
+        },
+        "files":["src/helpers.php"]
     },
 
     "minimum-stability": "dev",
