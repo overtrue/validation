@@ -59,6 +59,25 @@ $factory = new ValidatorFactory(new Translator($messages));
 
 ```
 
+## 设置属性名称
+
+```php
+$attributes = [
+    'username' => '用户名',
+    'password' => '密码',
+];
+
+$rules = [
+    'username' => 'required|min:5',
+    'password' => 'confirmed',
+    ///...
+];
+
+$messages = [...]; // 自定义消息，如果你在初始化 factory 的时候已经设置了消息，则留空即可
+
+$validator = $factory->make($input, $rules, $messages, $attributes);
+```
+
 # License
 
 MIT
