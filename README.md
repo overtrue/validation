@@ -5,7 +5,7 @@ Validation 是从Laravel的验证模块提取简化而来，旨在让你更方�
 
 更多验证规则请阅读：http://laravel.com/docs/4.2/validation#available-validation-rules
 
-## Usage
+# Usage
 
 ```php
 <?php
@@ -37,6 +37,28 @@ if ($validator->passes()) {
 
 ```
 
-## License
+## 自定义消息语言：
+
+> 语言列表可以从这里拿：https://github.com/caouecs/Laravel-lang
+
+以中文为例：
+
+```php
+$messages = [
+    'accepted'             => ':attribute 必须接受。',
+    'active_url'           => ':attribute 不是一个有效的网址。',
+    'after'                => ':attribute 必须是一个在 :date 之后的日期。',
+    'alpha'                => ':attribute 只能由字母组成。',
+    'alpha_dash'           => ':attribute 只能由字母、数字和斜杠组成。',
+    'alpha_num'            => ':attribute 只能由字母和数字组成。',
+    // ...
+];
+
+//初始化工厂对象
+$factory = new ValidatorFactory(new Translator($messages));
+
+```
+
+# License
 
 MIT
