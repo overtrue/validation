@@ -32,7 +32,7 @@ if ($validator->passes()) {
 } else {
     //未通过
     //输出错误消息
-    print_r($validator->messages()); // 或者 $validator->errors();
+    print_r($validator->messages()->all()); // 或者 $validator->errors();
 }
 
 ```

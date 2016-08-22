@@ -49,6 +49,28 @@ function array_get($array, $key, $default = null)
 }
 
 /**
+ * Flatten a multi-dimensional associative array with dots.
+ *
+ * @param  array   $array
+ * @param  string  $prepend
+ * @return array
+ */
+function array_dot($array, $prepend = '')
+{
+    $results = [];
+
+    foreach ($array as $key => $value) {
+        if (is_array($value)) {
+            $results = array_merge($results, dot($value, $prepend.$key.'.'));
+        } else {
+            $results[$prepend.$key] = $value;
+        }
+    }
+
+    return $results;
+}
+
+/**
  * Check input is array accessable.
  *
  * @param mixed $value

@@ -16,14 +16,14 @@ class ValidatorTest extends PHPUnit_Framework_TestCase
      *
      * @return
      */
-    public function testCases($input, $rule, $status, $messages = null)
+    public function testCases($input, $rule, $status, $message = null)
     {
         $validator = $this->validator->make($input, $rule);
 
         $this->assertEquals($status, $validator->passes());
 
         if (!$status) {
-            $this->assertSame((array)$messages, $validator->messages());
+            $this->assertSame($message, $validator->messages()->first());
         }
     }
 
