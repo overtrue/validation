@@ -2453,7 +2453,7 @@ class Validator
             $this->passes();
         }
 
-        return $this->messages->all();
+        return $this->messages;
     }
 
     /**
