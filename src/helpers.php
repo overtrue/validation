@@ -61,7 +61,7 @@ function array_dot($array, $prepend = '')
 
     foreach ($array as $key => $value) {
         if (is_array($value)) {
-            $results = array_merge($results, dot($value, $prepend.$key.'.'));
+            $results = array_merge($results, array_dot($value, $prepend.$key.'.'));
         } else {
             $results[$prepend.$key] = $value;
         }
