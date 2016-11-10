@@ -2445,7 +2445,7 @@ class Validator
      * Get the message container for the validator.
      *
      *
-     * @return \Overtrue\Support\MessageBag
+     * @return \Overtrue\Validation\MessageBag
      */
     public function messages()
     {
@@ -2460,7 +2460,7 @@ class Validator
      * An alternative more semantic shortcut to the message container.
      *
      *
-     * @return \Overtrue\Support\MessageBag
+     * @return \Overtrue\Validation\MessageBag
      */
     public function errors()
     {
